@@ -1,34 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { BankAccountsService } from './bank-accounts.service';
-import { CreateBankAccountDto } from './dto/create-bank-account.dto';
-import { UpdateBankAccountDto } from './dto/update-bank-account.dto';
+import { Controller, Post, Body } from '@nestjs/common'
+import { BankAccountService } from 'src/@core/domain/bank-account.service'
 
 @Controller('bank-accounts')
 export class BankAccountsController {
-  constructor(private readonly bankAccountsService: BankAccountsService) {}
+    public constructor(
+        private readonly bankAccountService: BankAccountService,
+    ) {}
 
-  @Post()
-  create(@Body() createBankAccountDto: CreateBankAccountDto) {
-    return this.bankAccountsService.create(createBankAccountDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.bankAccountsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bankAccountsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBankAccountDto: UpdateBankAccountDto) {
-    return this.bankAccountsService.update(+id, updateBankAccountDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bankAccountsService.remove(+id);
-  }
+    @Post()
+    public create(@Body('account-number') accountNumber: string) {
+        return this.bankAccountService.create(accountNumber)
+    }
 }
