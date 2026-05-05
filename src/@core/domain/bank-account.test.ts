@@ -4,7 +4,7 @@ describe('Bank Account', () => {
     let bankAccount: BankAccount
 
     it('should create a bank account', () => {
-        bankAccount = new BankAccount('1', 1000, '1111')
+        bankAccount = new BankAccount(1000, '1111', '1')
         expect(bankAccount.id).toBe('1')
         expect(bankAccount.balance).toBe(1000)
         expect(bankAccount.accountNumber).toBe('1111')

@@ -1,8 +1,8 @@
 export class BankAccount {
     public constructor(
-        private readonly _id: string,
         private _balance: number,
         private _accountNumber: string,
+        private readonly _id: string = crypto.randomUUID(),
     ) {}
 
     public debit(amount: number) {

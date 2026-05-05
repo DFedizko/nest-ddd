@@ -1,4 +1,3 @@
-import { readableStreamLikeToAsyncGenerator } from 'rxjs/internal/util/isReadableStreamLike'
 import { BankAccount } from './bank-account'
 import type { BankAccountRepository } from './bank-account.repository'
 import { TransferService } from './transfer.service'
@@ -15,7 +14,7 @@ export class BankAccountService {
     ) {}
 
     public async create(accountNumber: string): Promise<BankAccount> {
-        const bankAccount = new BankAccount('1', 0, accountNumber)
+        const bankAccount = new BankAccount(0, accountNumber)
         await this.bankAccountRepo.insert(bankAccount)
         return bankAccount
     }
@@ -25,6 +24,19 @@ export class BankAccountService {
         accountNumberDestiny,
         amount,
     }: TransferProps) {
-        // TODO
+        const bankAccountSource =
+            await this.bankAccountRepo.findByAccountNumber(accountNumberSource)
+        const bankAccountDestiny =
+            await this.bankAccountRepo.findByAccountNumber(accountNumberDestiny)
+
+        const transferService = new TransferService()
+        transferService.transfer({
+            bankAccountSource,
+            bankAccountDestiny,
+            amount,
+        })
+
+        await this.bankAccountRepo.update(bankAccountSource)
+        await this.bankAccountRepo.update(bankAccountDestiny)
     }
 }
